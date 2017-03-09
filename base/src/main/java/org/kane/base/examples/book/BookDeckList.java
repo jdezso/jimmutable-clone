@@ -3,8 +3,6 @@ package org.kane.base.examples.book;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.kane.base.examples.card.Card;
-import org.kane.base.examples.card.Deck;
 import org.kane.base.immutability.collections.FieldArrayList;
 import org.kane.base.immutability.collections.FieldList;
 import org.kane.base.immutability.decks.StandardImmutableListDeck;
@@ -61,18 +59,25 @@ final public class BookDeckList extends StandardImmutableListDeck<BookDeckList, 
     {
         return new Builder(this);
     }
-
+    
+    
     final static public class Builder extends StandardImmutableListDeck.Builder<BookDeckList, Book>
     {
         public Builder()
         {
-//            super((Function<Builder, BookDeckList>) BookDeckList::new);
+            super();
             under_construction = new BookDeckList(this);
         }
         
         public Builder(BookDeckList starting_point)
         {
             super(starting_point);
+        }
+        
+        public void addBook(Book book)
+        {
+            if ( book == null ) return;
+            under_construction.getSimpleContents().add(book);
         }
     }
 }

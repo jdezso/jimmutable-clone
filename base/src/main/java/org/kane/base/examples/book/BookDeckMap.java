@@ -15,6 +15,7 @@ final public class BookDeckMap extends StandardImmutableMapDeck<BookDeckMap, Str
 {
 	private FieldHashMap<String,Book> books = new FieldHashMap<>();
 	
+	
 	private BookDeckMap(Builder builder)
 	{
 	}
@@ -44,8 +45,15 @@ final public class BookDeckMap extends StandardImmutableMapDeck<BookDeckMap, Str
 	{
 		Validator.containsOnlyInstancesOf(String.class, Book.class, books);
 	}
+
+    @Override
+    public Builder getBuilder()
+    {
+        return new Builder(this);
+    }
 	
-	static public class Builder
+    
+	static public class Builder extends StandardImmutableMapDeck.Builder<BookDeckMap, String, Book>
 	{
 		private BookDeckMap under_construction;
 		
@@ -56,18 +64,13 @@ final public class BookDeckMap extends StandardImmutableMapDeck<BookDeckMap, Str
 		
 		public Builder(BookDeckMap starting_point)
 		{
-			under_construction = starting_point.deepMutableCloneForBuilder();
+			super(starting_point);
 		}
 
 		public void putBook(String key, Book book)
 		{
 			if ( key == null || book == null ) return;
 			under_construction.getSimpleContents().put(key,book);
-		}
-		
-		public BookDeckMap create()
-		{
-			return under_construction.deepClone();
 		}
 	}
 }

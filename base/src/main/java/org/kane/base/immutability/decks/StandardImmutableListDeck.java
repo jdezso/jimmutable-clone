@@ -1,7 +1,6 @@
 package org.kane.base.immutability.decks;
 
 import java.util.Collection;
-import java.util.function.Function;
 
 import org.kane.base.immutability.collections.FieldList;
 
@@ -46,12 +45,9 @@ abstract public class StandardImmutableListDeck<T extends StandardImmutableListD
 	
     abstract static public class Builder<T extends StandardImmutableListDeck<T, E>, E> extends StandardImmutableDeck.Builder<T, E>
     {
-//        protected <B extends Builder<T, E>> Builder(Function<B, T> constructor)
-//        {
-//            super(constructor);
-//        }
         public Builder()
         {
+            super();
         }
         
         public Builder(T starting_point)

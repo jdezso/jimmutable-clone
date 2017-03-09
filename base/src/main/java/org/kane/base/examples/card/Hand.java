@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
-import org.kane.base.examples.card.Deck.Builder;
 import org.kane.base.immutability.collections.FieldHashSet;
 import org.kane.base.immutability.collections.FieldSet;
 import org.kane.base.immutability.decks.StandardImmutableSetDeck;
@@ -131,7 +130,7 @@ final public class Hand extends StandardImmutableSetDeck<Hand, Card>
     {
         public Builder()
         {
-//            super((Function<Builder, Hand>) Hand::new);
+            super();
             under_construction = new Hand(this);
         }
 

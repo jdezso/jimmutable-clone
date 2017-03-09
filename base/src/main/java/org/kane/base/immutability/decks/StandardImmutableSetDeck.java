@@ -1,7 +1,5 @@
 package org.kane.base.immutability.decks;
 
-import java.util.function.Function;
-
 import org.kane.base.immutability.collections.FieldSet;
 
 
@@ -13,12 +11,9 @@ abstract public class StandardImmutableSetDeck<T extends StandardImmutableSetDec
     
     abstract static public class Builder<T extends StandardImmutableSetDeck<T, E>, E> extends StandardImmutableDeck.Builder<T, E>
     {
-//        protected <B extends Builder<T, E>> Builder(Function<B, T> constructor)
-//        {
-//            super(constructor);
-//        }
         public Builder()
         {
+            super();
         }
         
         public Builder(T starting_point)

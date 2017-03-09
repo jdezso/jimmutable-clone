@@ -2,7 +2,6 @@ package org.kane.base.examples.card;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.function.Function;
 
 import org.kane.base.immutability.collections.FieldArrayList;
 import org.kane.base.immutability.collections.FieldList;
@@ -67,7 +66,7 @@ final public class Deck extends StandardImmutableListDeck<Deck, Card>
     {
         public Builder()
         {
-//            super((Function<Builder, Deck>) Deck::new);
+            super();
             under_construction = new Deck(this);
         }
         

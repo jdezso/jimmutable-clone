@@ -2,17 +2,16 @@ package org.kane.base.immutability.decks;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.function.Function;
 
 import org.kane.base.immutability.StandardImmutableObject;
 import org.kane.base.immutability.collections.FieldCollection;
-import org.kane.base.immutability.decks.StandardImmutableListDeck.Builder;
 
 
 abstract public class StandardImmutableDeck<T extends StandardImmutableDeck<T, E>, E> extends StandardImmutableObject<T> implements Iterable<E>
 {
     abstract public FieldCollection<E> getSimpleContents();
     abstract public Builder<T, E> getBuilder();
+    
     
     @Override
     public Iterator<E> iterator()
@@ -96,10 +95,6 @@ abstract public class StandardImmutableDeck<T extends StandardImmutableDeck<T, E
     {
         protected T under_construction;
         
-//        protected <B extends Builder<T, E>> Builder(Function<B, T> constructor)
-//        {
-//            under_construction = constructor.apply(this);
-//        }
         public Builder()
         {
         }
