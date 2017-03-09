@@ -216,13 +216,16 @@ public class Blackjack
     
     synchronized private Hand dealOneCard(Hand hand)
     {
-        Deck.Builder new_deck = new Deck.Builder(deck);
-        Card card = new_deck.getCards().remove(0);
-        deck = new_deck.create();
+        // Option 1) Two calls
+        Card card = deck.getSimpleContents().get(0);
+        deck = deck.cloneRemove(0);
         
-        Hand.Builder new_hand = new Hand.Builder(hand);
-        new_hand.getCards().add(card);
-        return new_hand.create();
+        // Option 2) Do it yourself 
+//        Deck.Builder new_deck = new Deck.Builder(deck);
+//        Card card = new_deck.getSimpleContents().remove(0);
+//        deck = new_deck.create();
+        
+        return hand.cloneAdd(card);
     }
     
     private Hand deal(Hand hand, int num_cards)

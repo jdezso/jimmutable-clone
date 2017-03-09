@@ -1,9 +1,72 @@
 package org.kane.base.immutability.decks;
 
+import java.util.Collection;
+import java.util.function.Function;
+
 import org.kane.base.immutability.collections.FieldList;
+
 
 abstract public class StandardImmutableListDeck<T extends StandardImmutableListDeck<T, E>, E> extends StandardImmutableDeck<T, E>
 {
 	@Override
     abstract public FieldList<E> getSimpleContents();
+	
+	@Override
+	abstract public Builder<T, E> getBuilder();
+    
+	
+	public T cloneAddAll(int index, Collection<? extends E> elements)
+	{
+        Builder<T, E> builder = getBuilder();
+        builder.getSimpleContents().addAll(index, elements);
+        return builder.create();
+	}
+	
+    public T cloneSet(int index, E element)
+    {
+        Builder<T, E> builder = getBuilder();
+        builder.getSimpleContents().set(index, element);
+        return builder.create();
+    }
+    
+    public T cloneAdd(int index, E element)
+    {
+        Builder<T, E> builder = getBuilder();
+        builder.getSimpleContents().add(index, element);
+        return builder.create();
+    }
+    
+    public T cloneRemove(int index)
+    {
+        Builder<T, E> builder = getBuilder();
+        builder.getSimpleContents().remove(index);
+        return builder.create();
+    }
+    
+	
+    abstract static public class Builder<T extends StandardImmutableListDeck<T, E>, E> extends StandardImmutableDeck.Builder<T, E>
+    {
+//        protected <B extends Builder<T, E>> Builder(Function<B, T> constructor)
+//        {
+//            super(constructor);
+//        }
+        public Builder()
+        {
+        }
+        
+        public Builder(T starting_point)
+        {
+            super(starting_point);
+        }
+        
+        public FieldList<E> getSimpleContents()
+        {
+            return under_construction.getSimpleContents();
+        }
+        
+        public T create()
+        {
+            return under_construction.deepClone();
+        }
+    }
 }

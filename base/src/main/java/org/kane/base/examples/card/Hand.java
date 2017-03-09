@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
+import org.kane.base.examples.card.Deck.Builder;
 import org.kane.base.immutability.collections.FieldHashSet;
 import org.kane.base.immutability.collections.FieldSet;
 import org.kane.base.immutability.decks.StandardImmutableSetDeck;
@@ -119,39 +120,34 @@ final public class Hand extends StandardImmutableSetDeck<Hand, Card>
         return super.equals(obj);
     }
 
-
-    static public class Builder
+    @Override
+    public Builder getBuilder()
     {
-        private Hand under_construction;
-        
+        return new Builder(this);
+    }
+    
+
+    final static public class Builder extends StandardImmutableSetDeck.Builder<Hand, Card>
+    {
         public Builder()
         {
+//            super((Function<Builder, Hand>) Hand::new);
             under_construction = new Hand(this);
         }
-        
+
         public Builder(Hand starting_point)
         {
-            under_construction = starting_point.deepMutableCloneForBuilder();
+            super(starting_point);
         }
         
-        public void setID(int id)
+        public void setMaxSize(int max_size)
         {
-            under_construction.max_size = id;
+            under_construction.max_size = max_size;
         }
         
         public void setName(String name)
         {
             under_construction.name = name;
-        }
-
-        public FieldSet<Card> getCards()
-        {
-            return under_construction.getSimpleContents();
-        }
-        
-        public Hand create()
-        {
-            return under_construction.deepClone();
         }
     }
 }

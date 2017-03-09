@@ -2,6 +2,7 @@ package org.kane.base.examples.card;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Function;
 
 import org.kane.base.immutability.collections.FieldArrayList;
 import org.kane.base.immutability.collections.FieldList;
@@ -10,12 +11,13 @@ import org.kane.base.serialization.Validator;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+
 @XStreamAlias("card-deck")
 final public class Deck extends StandardImmutableListDeck<Deck, Card>
 {
     private FieldList<Card> cards = new FieldArrayList<>();
     
-    private Deck(Builder builder)
+    public Deck(Builder builder)
     {
     }
     
@@ -54,30 +56,27 @@ final public class Deck extends StandardImmutableListDeck<Deck, Card>
         Validator.containsOnlyInstancesOf(Card.class, cards);
     }
     
-    static public class Builder
+    @Override
+    public Builder getBuilder()
     {
-        private Deck under_construction;
-        
+        return new Builder(this);
+    }
+    
+    
+    final static public class Builder extends StandardImmutableListDeck.Builder<Deck, Card>
+    {
         public Builder()
         {
+//            super((Function<Builder, Deck>) Deck::new);
             under_construction = new Deck(this);
         }
         
         public Builder(Deck starting_point)
         {
-            under_construction = starting_point.deepMutableCloneForBuilder();
-        }
-
-        public FieldList<Card> getCards()
-        {
-            return under_construction.getSimpleContents();
-        }
-        
-        public Deck create()
-        {
-            return under_construction.deepClone();
+            super(starting_point);
         }
     }
+    
     
     static public Deck createDefaultDeck(boolean include_jokers, boolean shuffle)
     {
@@ -92,8 +91,8 @@ final public class Deck extends StandardImmutableListDeck<Deck, Card>
             {
                 if (! include_jokers) continue;
                 
-                deck_builder.getCards().add(new Card(suit, Value.JOKER));
-                deck_builder.getCards().add(new Card(suit, Value.JOKER));
+                deck_builder.getSimpleContents().add(new Card(suit, Value.JOKER));
+                deck_builder.getSimpleContents().add(new Card(suit, Value.JOKER));
             }
             
             for (Value value : Value.values())
@@ -101,14 +100,14 @@ final public class Deck extends StandardImmutableListDeck<Deck, Card>
                 if (Value.UNKNOWN == value) continue;
                 if (Value.JOKER == value) continue;
                 
-                deck_builder.getCards().add(new Card(suit, value));
+                deck_builder.getSimpleContents().add(new Card(suit, value));
             }
         }
         
         // 2) Shuffle
         if (shuffle)
         {
-            Collections.shuffle(deck_builder.getCards());
+            Collections.shuffle(deck_builder.getSimpleContents());
         }
         
         // 3) Serve

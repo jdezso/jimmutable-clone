@@ -3,6 +3,8 @@ package org.kane.base.examples.book;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.kane.base.examples.card.Card;
+import org.kane.base.examples.card.Deck;
 import org.kane.base.immutability.collections.FieldArrayList;
 import org.kane.base.immutability.collections.FieldList;
 import org.kane.base.immutability.decks.StandardImmutableListDeck;
@@ -54,29 +56,23 @@ final public class BookDeckList extends StandardImmutableListDeck<BookDeckList, 
 		Validator.containsOnlyInstancesOf(Book.class, getSimpleContents());
 	}
 
-	static public class Builder
-	{
-		private BookDeckList under_construction;
-		
-		public Builder()
-		{
-			under_construction = new BookDeckList(this);
-		}
-		
-		public Builder(BookDeckList starting_point)
-		{
-			under_construction = starting_point.deepMutableCloneForBuilder();
-		}
+    @Override
+    public Builder getBuilder()
+    {
+        return new Builder(this);
+    }
 
-		public void addBook(Book book)
-		{
-			if ( book == null ) return;
-			under_construction.getSimpleContents().add(book);
-		}
-		
-		public BookDeckList create()
-		{
-			return under_construction.deepClone();
-		}
-	}
+    final static public class Builder extends StandardImmutableListDeck.Builder<BookDeckList, Book>
+    {
+        public Builder()
+        {
+//            super((Function<Builder, BookDeckList>) BookDeckList::new);
+            under_construction = new BookDeckList(this);
+        }
+        
+        public Builder(BookDeckList starting_point)
+        {
+            super(starting_point);
+        }
+    }
 }
